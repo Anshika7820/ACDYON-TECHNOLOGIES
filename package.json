@@ -1,25 +1,12 @@
 {
-  "name": "acdyon-frontend-challenge",
+  "name": "hireflow-monorepo",
   "version": "1.0.0",
   "private": true,
-  "description": "HireFlow - Smart Job Application Command Center for Acdyon Technologies Frontend Assessment (Track 2: Premium Home Page)",
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend run build",
-    "preview": "npm --prefix frontend run preview",
-    "backend": "npm --prefix backend start",
     "backend:dev": "npm --prefix backend run dev",
-    "install:all": "npm --prefix frontend install && npm --prefix backend install"
-  },
-  "keywords": [
-    "hireflow",
-    "job-tracker",
-    "kanban",
-    "react",
-    "vite",
-    "tailwind",
-    "assessment"
-  ],
-  "author": "Acdyon Technologies Candidate",
-  "license": "MIT"
+    "backend:start": "npm --prefix backend run start",
+    "install:all": "npm install && npm --prefix frontend install && npm --prefix backend install"
+  }
 }

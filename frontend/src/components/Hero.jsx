@@ -1,51 +1,48 @@
 import React from 'react';
-import { ArrowRight, ShieldCheck, Zap, Layers, Sparkles, CheckCircle2, ChevronRight, Terminal } from 'lucide-react';
+import { ArrowRight, Terminal } from 'lucide-react';
 
 export default function Hero({ onOpenCommand }) {
   return (
-    <section className="relative pt-8 pb-12 md:pt-16 md:pb-20 overflow-hidden">
+    <section className="relative pt-12 pb-12 md:pt-20 md:pb-16 overflow-hidden">
       
-      {/* Background glow gradient */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-brand-500/15 dark:bg-brand-500/20 blur-[120px] rounded-full pointer-events-none" />
+      {/* Subtle background gradient glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[300px] bg-brand-500/15 dark:bg-brand-500/20 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-4xl mx-auto space-y-6">
+        <div className="text-center max-w-3xl mx-auto space-y-6">
           
-          {/* Top Pill Tag */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-sm animate-fade-in">
-            <span className="flex h-2 w-2 rounded-full bg-brand-500 animate-ping" />
-            <span className="font-mono">Built for Engineers & Product Builders</span>
-            <span className="text-slate-400">&bull;</span>
-            <span className="text-brand-600 dark:text-brand-400 font-medium">100% Private</span>
+          {/* Subtle Tag */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
+            <span className="w-2 h-2 rounded-full bg-brand-500" />
+            <span>Job Application Workspace</span>
           </div>
 
           {/* Master Headline */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.12]">
-            Turn your scattered job search into a{' '}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.12]">
+            Your job search,{' '}
             <span className="bg-gradient-to-r from-brand-600 via-indigo-500 to-purple-500 bg-clip-text text-transparent">
-              high-clarity pipeline.
+              finally under control.
             </span>
           </h1>
 
-          {/* Subtitle & Value Proposition */}
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            Spreadsheets get cluttered. Generic applicant trackers sell your telemetry. 
-            HireFlow gives you a clean, keyboard-friendly command center to manage active rounds, interview notes, and compensation targets.
+          {/* Subtitle */}
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
+            Track applications, interview stages, and next steps in one focused workspace. No messy spreadsheets, no lost context.
           </p>
 
-          {/* Primary Call-to-Action Buttons */}
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+          {/* Call-to-Action Buttons */}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href="#product-demo"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 text-sm sm:text-base font-bold rounded-2xl bg-brand-600 hover:bg-brand-500 text-white shadow-glow hover:shadow-glow-lg transition-all transform hover:-translate-y-0.5"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold rounded-xl bg-brand-600 hover:bg-brand-500 text-white shadow-sm transition-all"
             >
-              <span>Test Interactive Pipeline</span>
+              <span>Explore the demo</span>
               <ArrowRight className="w-4 h-4" />
             </a>
 
             <button
               onClick={onOpenCommand}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-all"
             >
               <Terminal className="w-4 h-4 text-brand-500" />
               <span>Quick Command Bar</span>
@@ -55,21 +52,10 @@ export default function Hero({ onOpenCommand }) {
             </button>
           </div>
 
-          {/* Honest Micro-Guarantees */}
-          <div className="pt-6 flex flex-wrap items-center justify-center gap-y-2 gap-x-6 text-xs text-slate-500 dark:text-slate-400">
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-              <span>Zero Account Wall for Demo</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-              <span>Local-First Data Storage</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-              <span>One-Click JSON/CSV Export</span>
-            </div>
-          </div>
+          {/* Honest Disclosure */}
+          <p className="text-xs text-slate-400 dark:text-slate-500 pt-2 font-mono">
+            Interactive demo &bull; Fictional sample data &bull; No signup required
+          </p>
 
         </div>
       </div>

@@ -1,46 +1,45 @@
-# Engineering Decisions & Rationale (Track 2: Premium Home Page)
+# HireFlow — Design Decisions (Track 2: Premium Home Page)
 
-**Product:** HireFlow — Smart Job Application Command Center  
-**Challenge:** Acdyon Technologies Frontend Engineering Assessment  
+**Product:** HireFlow — Smart Job Application Workspace  
+**Assessment:** Acdyon Technologies Frontend Engineering Assessment  
 **Track:** Part 2 — The Premium Home Page  
 
 ---
 
-### 1. Why this design & product strategy over the obvious alternative rejected?
+### 1. Why this approach over the alternative rejected?
 
-**The Obvious Alternative Rejected:**  
-Building a generic, static marketing landing page with decorative 3D illustrations, vague value claims, and fabricated social proof (*"Loved by 500,000 developers!"* or fake company badge tickers).
+I designed HireFlow as an **interactive job application workspace backed by a lightweight REST API**, rather than a static marketing landing page with non-functional screenshots.
 
-**Why HireFlow’s Strategy Was Chosen:**  
-A developer or technical evaluator determines whether a product is worth their attention within the first 3 seconds. Rather than making abstract claims, HireFlow places a **fully functional, interactive product simulator directly into the hero experience**. 
+The core requirement of the assessment was to showcase the product directly rather than just making claims about it. For a job search tool, the clearest way to demonstrate value within the first three seconds is to place the interactive pipeline front and center. A reviewer can immediately see active roles across Wishlist, Applied, Interviewing, and Offer stages, click to inspect interview notes and upcoming round context, or move a card to observe state progression.
 
-- **Show, Don’t Tell:** The user immediately interacts with realistic engineering application loops (*Stripe Staff Frontend*, *Linear Product Engineer*, *Vercel Design Systems*), complete with stage tags, salary bounds, and round debriefs.
-- **Immediate Interactivity:** Evaluators can switch between a visual Kanban pipeline, an Excel-dense data table, and funnel metrics, advance stages in real-time, filter by stack, or inspect detailed interview notes with zero signup friction.
-- **Strict Honesty Over Noise:** In compliance with the challenge's core grading axis, we omitted all fabricated testimonials, inflated user counters, and misleading partner endorsements. Value is communicated purely through speed, visual density, and thoughtful interaction design.
+I rejected building a marketing page with large 3D graphics or long feature comparison matrices because they get in the way of communicating what the product actually does. 
+
+All application records shown in the demo are fictional and clearly labeled as such. I deliberately omitted testimonials, user counts, and partner badges that I could not substantiate, keeping the copy focused entirely on product utility.
 
 ---
 
-### 2. One trade-off made under the time limit, and what you’d do with a real week.
+### 2. One trade-off made under the time limit, and what I'd do with a real week.
 
-**The Trade-Off:**  
-To deliver maximum visual craft, micro-interaction polish, and rock-solid cross-viewport responsiveness (390px mobile to 1440px desktop) within the assessment window, state management is maintained client-side in React with an optional lightweight Express/Node.js backend API companion, rather than building a heavy distributed cloud persistence architecture with OAuth and email sync.
+**The Trade-off:**  
+Because this is a time-limited frontend assessment, I structured the backend as a lightweight in-memory Express REST API with client-side fallback rather than implementing full user authentication, multi-tenant database persistence, or cloud sync. 
 
-**What I Would Build With a Real Week:**
-1. **Local-First Encrypted Sync:** Integrate an encrypted local-first sync layer (e.g. IndexedDB backed by CRDTs or PowerSync) allowing instant offline writes with background cloud replication.
-2. **Interactive Compensation Modeling:** Add an interactive equity visualizer calculating option strike prices, 4-year vesting schedules, and cost-of-living adjustments across competing offers.
-3. **Browser Extension Companion:** A lightweight extension to scrape job URLs from LinkedIn/Wellfound with 1-click parsing directly into the candidate's HireFlow pipeline.
-4. **Comprehensive Automated Test Matrix:** Add Playwright end-to-end regression tests across all breakpoints (390px, 768px, 1024px, 1440px) and automated WCAG AAA accessibility audits.
+This allowed me to spend my available time where it mattered most for Track 2: typographic hierarchy, interaction polish, mobile responsiveness at 390px, and an all-or-nothing Light/Dark theme system.
+
+**With a real week:**
+1. **Persistent Database & Auth:** Connect the Express REST API to a PostgreSQL/Prisma datastore with Supabase/Clerk authentication for persistent candidate profiles.
+2. **Automated End-to-End Testing:** Write Playwright test suites covering the core interaction path (filtering, card expansion, stage advancement) across mobile and desktop breakpoints.
+3. **Interactive Offer Comparison:** Add an offer evaluation tool to model base salaries, equity components, and start dates side-by-side.
 
 ---
 
-### 3. Where did you use AI tools, and what did you personally verify or change afterward?
+### 3. Where did I use AI tools, and what did I personally verify or change?
 
-**Where AI Assisted:**
-- **Data Modeling & Domain Brainstorming:** Brainstorming realistic interview round stages, tech stacks, and edge-case job tracking attributes.
-- **Boilerplate Acceleration:** Rapid generation of initial component scaffolding and SVG icon mappings.
+**Where AI Assisted:**  
+I used AI during development for initial component boilerplate scaffolding, brainstorming realistic interview round stages, and checking CSS styling approaches.
 
-**What Was Personally Designed, Verified, and Engineered:**
-- **Design System & Spacing Tokens:** Hand-crafted the Slate/Indigo color architecture, typography scale (`Plus Jakarta Sans` + `JetBrains Mono`), and glassmorphism backdrop filters.
-- **Responsive Architecture at 390px & 1440px:** Manually tested and re-architected mobile behavior: on mobile viewports (<768px), the 4-column Kanban collapses into an accessible stage-tabbed view to guarantee **zero horizontal overflow** and maintain 44px+ touch targets.
-- **Micro-Interactions & Easter Egg:** Implemented the Konami Code event listener (`↑ ↑ ↓ ↓ ← → ← → B A`), logo click multiplier, dynamic stage advance cycler, and custom command palette (`⌘K`).
-- **Code Audit & Ownership:** Every line of JSX, Express route, and Tailwind utility was reviewed for semantic correctness, performance, and clean maintainability.
+**What I Personally Designed, Changed, and Verified:**
+- **Product Flow & Layout:** I decided the structure of the homepage, placing the interactive pipeline right beneath the hero to minimize time-to-value.
+- **Mobile Responsive Architecture (390px):** I redesigned the 4-column desktop Kanban into an active stage tabbed view on mobile screens (<768px) to guarantee zero horizontal overflow and comfortable touch targets.
+- **Frontend <-> Backend Integration:** I connected the frontend to the REST endpoints (`GET /api/applications`, `PATCH /api/applications/:id/stage`) with optimistic client updates.
+- **Theme & Accessibility:** I implemented the Light/Dark mode token architecture and added `@media (prefers-reduced-motion)` support.
+- **Content Honesty:** I reviewed and replaced marketing claims with straightforward, honest copy and added clear demo data disclosures.

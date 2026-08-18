@@ -5,17 +5,9 @@ import {
   BarChart3, 
   Plus, 
   Search, 
-  SlidersHorizontal, 
-  ArrowUpRight, 
   ChevronRight, 
-  CheckCircle2, 
-  Building2, 
-  DollarSign, 
   Clock, 
-  Sparkles,
-  MapPin,
-  ExternalLink,
-  ChevronDown
+  Info
 } from 'lucide-react';
 import { STAGES } from '../data/mockJobs';
 
@@ -46,7 +38,7 @@ export default function DashboardMockup({
     return matchesSearch && matchesStage;
   });
 
-  // Dynamic counts
+  // Dynamic stage counts
   const stageCounts = {
     wishlist: applications.filter(j => j.stage === 'wishlist').length,
     applied: applications.filter(j => j.stage === 'applied').length,
@@ -71,10 +63,11 @@ export default function DashboardMockup({
       location: 'Remote',
       appliedDate: new Date().toISOString().split('T')[0],
       lastActivity: 'Just now',
+      nextAction: 'Follow up with recruiter regarding next steps',
       type: 'Full-time',
-      referral: 'Manual Entry',
+      referral: 'Direct application',
       round: 'Initial Stage',
-      notes: 'Added directly during live product walkthrough.',
+      notes: 'Added directly during interactive demo walkthrough.',
       tags: ['Custom', 'Active'],
       color: randomColor,
       initials: newCompany.slice(0, 2).toUpperCase(),
@@ -90,43 +83,35 @@ export default function DashboardMockup({
   };
 
   return (
-    <section id="product-demo" className="py-12 md:py-20 relative">
+    <section id="product-demo" className="py-8 md:py-16 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20 mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Interactive Live Product Simulator</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            See HireFlow in action right here.
+        <div className="text-center max-w-2xl mx-auto mb-6 md:mb-10">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Interactive Product Pipeline
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-400">
-            Click any job card to inspect rounds, advance stages, or toggle views. No sign-up required to test the feel.
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+            Click any card to inspect interview notes, or click <strong>Advance</strong> to move an opportunity across stages.
           </p>
         </div>
 
-        {/* Outer Dashboard Shell */}
-        <div className="rounded-2xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transition-all">
+        {/* Outer Dashboard Container */}
+        <div className="rounded-2xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
           
-          {/* Top Window Bar */}
+          {/* Top Demo Disclaimer Banner */}
+          <div className="px-4 py-2 bg-slate-100/90 dark:bg-slate-850/90 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+            <div className="flex items-center gap-2">
+              <Info className="w-3.5 h-3.5 text-brand-500 shrink-0" />
+              <span><strong>Demo Workspace</strong> &bull; All company names and application records are fictional sample data for illustration.</span>
+            </div>
+            <span className="font-mono text-[11px] hidden sm:inline text-slate-500">Live Client State</span>
+          </div>
+
+          {/* Subheader: Window Controls, View Switcher & Action */}
           <div className="px-4 py-3 sm:px-6 bg-slate-50 dark:bg-slate-925 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
             
-            {/* Left: Window Controls & Title */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-              </div>
-              <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 mx-1 hidden sm:block" />
-              <span className="text-xs font-mono font-medium text-slate-500 dark:text-slate-400">
-                hireflow-workspace / <strong className="text-slate-800 dark:text-slate-200">active_pipeline</strong>
-              </span>
-            </div>
-
-            {/* Center: View Switcher */}
+            {/* View Switcher */}
             <div className="flex items-center bg-slate-200/80 dark:bg-slate-800 p-1 rounded-xl">
               <button
                 onClick={() => setActiveView('kanban')}
@@ -159,11 +144,11 @@ export default function DashboardMockup({
                 }`}
               >
                 <BarChart3 className="w-3.5 h-3.5" />
-                <span>Analytics</span>
+                <span>Funnel</span>
               </button>
             </div>
 
-            {/* Right: Quick Action Button */}
+            {/* Quick Action Button */}
             <button
               onClick={() => setIsAddModalOpen(true)}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-brand-600 hover:bg-brand-500 text-white shadow-sm transition-all"
@@ -173,10 +158,10 @@ export default function DashboardMockup({
             </button>
           </div>
 
-          {/* Subheader: Stage Counter Chips & Search Filter */}
+          {/* Stage Filter Chips & Search */}
           <div className="p-4 sm:px-6 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
             
-            {/* Live Metric Badges */}
+            {/* Stage Filter Badges */}
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <button
                 onClick={() => setSelectedStageFilter('all')}
@@ -212,7 +197,7 @@ export default function DashboardMockup({
               </button>
             </div>
 
-            {/* Search Input */}
+            {/* Search Filter */}
             <div className="relative min-w-[220px]">
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
@@ -220,14 +205,14 @@ export default function DashboardMockup({
                 placeholder="Filter by company, role, or tag..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500"
               />
             </div>
           </div>
 
           {/* VIEW 1: KANBAN BOARD */}
           {activeView === 'kanban' && (
-            <div className="p-4 sm:p-6 bg-slate-50/50 dark:bg-slate-950/50 min-h-[480px]">
+            <div className="p-4 sm:p-6 bg-slate-50/50 dark:bg-slate-950/50 min-h-[460px]">
               
               {/* Mobile Stage Selector */}
               <div className="md:hidden flex overflow-x-auto pb-3 mb-4 gap-2 border-b border-slate-200 dark:border-slate-800">
@@ -241,12 +226,12 @@ export default function DashboardMockup({
                         : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                     }`}
                   >
-                    {s.label.split(' ')[0]} ({applications.filter(j => j.stage === s.id).length})
+                    {s.label} ({applications.filter(j => j.stage === s.id).length})
                   </button>
                 ))}
               </div>
 
-              {/* Desktop 4-Column Grid / Mobile Single Column */}
+              {/* Grid Layout */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {STAGES.map((stage) => {
                   const stageJobs = filteredJobs.filter(j => j.stage === stage.id);
@@ -260,7 +245,7 @@ export default function DashboardMockup({
                       }`}
                     >
                       {/* Column Header */}
-                      <div className="flex items-center justify-between px-2 py-2 mb-2">
+                      <div className="flex items-center justify-between px-2 py-1.5 mb-2">
                         <div className="flex items-center gap-2">
                           <span className={`w-2.5 h-2.5 rounded-full ${stage.dotColor}`} />
                           <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
@@ -273,57 +258,62 @@ export default function DashboardMockup({
                       </div>
 
                       {/* Cards Container */}
-                      <div className="space-y-3 flex-1 overflow-y-auto max-h-[520px] pr-1">
+                      <div className="space-y-3 flex-1 overflow-y-auto max-h-[500px] pr-1">
                         {stageJobs.map((job) => (
                           <div
                             key={job.id}
                             onClick={() => onSelectJob(job)}
                             className="group p-3.5 rounded-xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-750 shadow-sm hover:shadow-md hover:border-brand-400 dark:hover:border-brand-500 cursor-pointer transition-all duration-150 transform hover:-translate-y-0.5"
                           >
-                            {/* Card Top: Company & Badge */}
-                            <div className="flex items-start justify-between gap-2">
-                              <div className="flex items-center gap-2.5">
-                                <div 
-                                  className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white shadow-sm shrink-0"
-                                  style={{ backgroundColor: job.color }}
-                                >
-                                  {job.initials}
-                                </div>
-                                <div>
-                                  <h4 className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-brand-500 transition-colors">
-                                    {job.company}
-                                  </h4>
-                                  <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium line-clamp-1">
-                                    {job.role}
-                                  </p>
-                                </div>
+                            {/* Card Top: Company & Role */}
+                            <div className="flex items-start gap-2.5">
+                              <div 
+                                className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white shadow-sm shrink-0"
+                                style={{ backgroundColor: job.color }}
+                              >
+                                {job.initials}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h4 className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-brand-500 transition-colors truncate">
+                                  {job.company}
+                                </h4>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate">
+                                  {job.role}
+                                </p>
                               </div>
                             </div>
 
+                            {/* Next Action Context */}
+                            {job.nextAction && (
+                              <div className="mt-2.5 px-2 py-1 rounded bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 text-[10px] text-slate-600 dark:text-slate-300 flex items-start gap-1.5">
+                                <Clock className="w-3 h-3 text-brand-500 shrink-0 mt-0.5" />
+                                <span className="line-clamp-2 leading-tight">{job.nextAction}</span>
+                              </div>
+                            )}
+
                             {/* Middle: Salary & Location */}
-                            <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                            <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
                               <span className="font-semibold text-slate-700 dark:text-slate-300 font-mono">
                                 {job.salary}
                               </span>
-                              <span className="truncate max-w-[100px] text-right">
+                              <span className="truncate max-w-[90px] text-right">
                                 {job.location.split(' ')[0]}
                               </span>
                             </div>
 
-                            {/* Bottom Context: Round / Tag */}
+                            {/* Bottom: Micro-Action (Advance Stage) */}
                             <div className="mt-2 flex items-center justify-between text-[10px]">
-                              <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium truncate max-w-[140px]">
-                                {job.tags[0] || 'Engineering'}
+                              <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium">
+                                #{job.tags[0] || 'Tech'}
                               </span>
                               
-                              {/* Advance Stage Micro-Action */}
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   onAdvanceStage(job.id);
                                 }}
                                 title="Advance to next stage"
-                                className="opacity-80 group-hover:opacity-100 px-1.5 py-0.5 rounded text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 font-medium flex items-center gap-0.5 transition-all"
+                                className="px-1.5 py-0.5 rounded text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 font-medium flex items-center gap-0.5 transition-all"
                               >
                                 <span>Advance</span>
                                 <ChevronRight className="w-3 h-3" />
@@ -355,8 +345,7 @@ export default function DashboardMockup({
                     <th className="py-3 px-4">Role</th>
                     <th className="py-3 px-4">Stage</th>
                     <th className="py-3 px-4">Compensation</th>
-                    <th className="py-3 px-4">Location</th>
-                    <th className="py-3 px-4">Current Round Context</th>
+                    <th className="py-3 px-4">Next Action / Context</th>
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
@@ -388,9 +377,8 @@ export default function DashboardMockup({
                         </span>
                       </td>
                       <td className="py-3.5 px-4 font-mono font-medium">{job.salary}</td>
-                      <td className="py-3.5 px-4">{job.location}</td>
-                      <td className="py-3.5 px-4 text-slate-500 dark:text-slate-400 max-w-xs truncate">
-                        {job.round}
+                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 max-w-xs truncate">
+                        {job.nextAction || job.round}
                       </td>
                       <td className="py-3.5 px-4 text-right">
                         <button
@@ -415,11 +403,11 @@ export default function DashboardMockup({
             <div className="p-6 bg-slate-50/50 dark:bg-slate-950/50 space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                  <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Interview Conversion Rate</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Interview Conversion</span>
                   <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
                     {Math.round((stageCounts.interview / Math.max(stageCounts.total, 1)) * 100)}%
                   </div>
-                  <p className="text-xs text-emerald-500 mt-1">3 active technical loops running</p>
+                  <p className="text-xs text-emerald-500 mt-1">{stageCounts.interview} active technical loops</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                   <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Offers on the Table</span>
@@ -429,15 +417,15 @@ export default function DashboardMockup({
                   <p className="text-xs text-slate-400 mt-1">Linear ($180k - $210k + Equity)</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                  <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Target Compensation Average</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Average Compensation Target</span>
                   <div className="text-2xl font-extrabold text-brand-500 mt-1 font-mono">
-                    $195,000 / yr
+                    $192,500 / yr
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">Calculated across 8 active roles</p>
+                  <p className="text-xs text-slate-400 mt-1">Across 8 tracked roles</p>
                 </div>
               </div>
 
-              {/* Visual Funnel Bars */}
+              {/* Distribution bars */}
               <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                 <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-4">Pipeline Volume Distribution</h4>
                 <div className="space-y-3">
@@ -450,9 +438,9 @@ export default function DashboardMockup({
                           <span className="text-slate-700 dark:text-slate-300">{s.label}</span>
                           <span className="text-slate-500 font-mono">{count} roles ({percent}%)</span>
                         </div>
-                        <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-2.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                           <div 
-                            className={`h-full transition-all duration-500 rounded-full ${
+                            className={`h-full transition-all duration-300 rounded-full ${
                               s.id === 'offer' ? 'bg-emerald-500' :
                               s.id === 'interview' ? 'bg-amber-500' :
                               s.id === 'applied' ? 'bg-blue-500' : 'bg-slate-500'
@@ -469,12 +457,9 @@ export default function DashboardMockup({
           )}
 
           {/* Footer Bar */}
-          <div className="px-6 py-3 bg-slate-50 dark:bg-slate-925 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Real-time local state active &bull; Click any card for notes</span>
-            </div>
-            <span className="font-mono text-[11px] hidden sm:inline">Tip: Press Cmd+K anytime</span>
+          <div className="px-6 py-3 bg-slate-50 dark:bg-slate-925 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+            <span>State updates automatically on click</span>
+            <span className="font-mono text-[11px] hidden sm:inline">Press ⌘K for command palette</span>
           </div>
 
         </div>
@@ -485,7 +470,7 @@ export default function DashboardMockup({
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
           <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Add Test Opportunity</h3>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Add Opportunity</h3>
             <form onSubmit={handleCreateJob} className="space-y-4 text-xs">
               <div>
                 <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Company Name</label>
@@ -500,7 +485,7 @@ export default function DashboardMockup({
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Target Role</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Role Title</label>
                 <input
                   type="text"
                   placeholder="e.g. Senior Frontend Engineer"
@@ -528,8 +513,8 @@ export default function DashboardMockup({
                   onChange={e => setNewStage(e.target.value)}
                   className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100"
                 >
-                  <option value="wishlist">Wishlist / Drafting</option>
-                  <option value="applied">Applied / In Review</option>
+                  <option value="wishlist">Wishlist</option>
+                  <option value="applied">Applied</option>
                   <option value="interview">Interviewing</option>
                   <option value="offer">Offer Received</option>
                 </select>

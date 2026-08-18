@@ -1,3 +1,4 @@
+// Sample fictional job application data for interactive demonstration
 export const initialApplications = [
   {
     id: 'app-1',
@@ -8,16 +9,17 @@ export const initialApplications = [
     location: 'Remote (US/EU)',
     appliedDate: '2026-07-28',
     lastActivity: '2 days ago',
+    nextAction: 'System architecture loop (Thursday 2:00 PM EST)',
     type: 'Full-time',
-    referral: 'Ex-colleague (Engineering Lead)',
+    referral: 'Ex-colleague referral',
     round: 'System Architecture (Round 3 of 4)',
-    notes: 'Covered distributed state & optimistic UI patterns in round 2. Next: Take-home review with Staff Architect.',
+    notes: 'Discussed state machines and optimistic caching in round 2. Next: Take-home walkthrough with Staff Architect.',
     tags: ['React', 'TypeScript', 'High Priority'],
     color: '#6366f1',
     initials: 'ST',
     timeline: [
       { date: 'Jul 28', event: 'Application submitted via referral' },
-      { date: 'Aug 02', event: 'Recruiter screen completed (30m)' },
+      { date: 'Aug 02', event: 'Recruiter screen completed' },
       { date: 'Aug 09', event: 'Technical deep-dive with Principal Eng' },
       { date: 'Aug 17', event: 'System Architecture round scheduled' },
     ]
@@ -31,6 +33,7 @@ export const initialApplications = [
     location: 'Remote (Global)',
     appliedDate: '2026-07-15',
     lastActivity: 'Yesterday',
+    nextAction: 'Review compensation package and equity vesting before Friday',
     type: 'Full-time',
     referral: 'Direct application',
     round: 'Offer Stage — Negotiation Phase',
@@ -40,7 +43,7 @@ export const initialApplications = [
     initials: 'LN',
     timeline: [
       { date: 'Jul 15', event: 'Application submitted' },
-      { date: 'Jul 20', event: 'First round portfolio walkthrough' },
+      { date: 'Jul 20', event: 'Portfolio walkthrough' },
       { date: 'Jul 29', event: 'Pair programming session' },
       { date: 'Aug 12', event: 'Founder chat & values alignment' },
       { date: 'Aug 16', event: 'Formal Offer letter received' },
@@ -55,6 +58,7 @@ export const initialApplications = [
     location: 'San Francisco, CA / Hybrid',
     appliedDate: '2026-08-01',
     lastActivity: '3 days ago',
+    nextAction: 'Component architecture interview (Wednesday 11:00 AM PST)',
     type: 'Full-time',
     referral: 'Conference contact',
     round: 'UI Craft & Component Design (Round 2 of 3)',
@@ -77,10 +81,11 @@ export const initialApplications = [
     location: 'San Francisco, CA / Remote',
     appliedDate: '2026-08-10',
     lastActivity: '5 days ago',
+    nextAction: 'Awaiting recruiter response on initial resume review',
     type: 'Full-time',
-    referral: 'None',
+    referral: 'Direct application',
     round: 'Application In Review',
-    notes: 'Submitted customized resume highlighting real-time multiplayer document sync.',
+    notes: 'Submitted resume highlighting real-time multiplayer document sync.',
     tags: ['WebSockets', 'Rust', 'CRDTs'],
     color: '#f24e1e',
     initials: 'FG',
@@ -98,6 +103,7 @@ export const initialApplications = [
     location: 'New York, NY / Remote',
     appliedDate: '2026-08-12',
     lastActivity: '4 days ago',
+    nextAction: 'Recruiter call scheduled for Thursday 2:00 PM EST',
     type: 'Full-time',
     referral: 'Alumni network',
     round: 'Recruiter Screening Scheduled',
@@ -119,8 +125,9 @@ export const initialApplications = [
     location: 'Remote (Worldwide)',
     appliedDate: 'Not submitted',
     lastActivity: 'Just added',
+    nextAction: 'Polish visualizer demo project before submitting direct pitch',
     type: 'Full-time',
-    referral: 'Preparing portfolio piece',
+    referral: 'Portfolio pitch',
     round: 'Drafting Application',
     notes: 'Polishing open-source Postgres visualizer tool before submitting direct pitch to Head of DX.',
     tags: ['PostgreSQL', 'Content', 'OSS'],
@@ -140,11 +147,12 @@ export const initialApplications = [
     location: 'San Francisco, CA',
     appliedDate: '2026-07-22',
     lastActivity: '1 day ago',
+    nextAction: 'Debrief call with Hiring Manager (Friday)',
     type: 'Full-time',
     referral: 'Engineering referral',
     round: 'Final Onsite Virtual (4 rounds)',
-    notes: 'Onsite completed yesterday. Topics: streaming token renderers, responsive canvas, concurrency.',
-    tags: ['AI UI', 'Streaming', 'High Priority'],
+    notes: 'Onsite completed. Covered streaming token renderers, responsive canvas, and state management.',
+    tags: ['Streaming UI', 'Performance', 'High Priority'],
     color: '#d97706',
     initials: 'AN',
     timeline: [
@@ -163,10 +171,11 @@ export const initialApplications = [
     location: 'Remote (US/India)',
     appliedDate: 'Not submitted',
     lastActivity: '3 days ago',
+    nextAction: 'Reach out to Engineering Manager on LinkedIn for scope clarity',
     type: 'Full-time',
-    referral: 'None',
+    referral: 'Direct outreach',
     round: 'Researching Team Structure',
-    notes: 'Reaching out to engineering manager on LinkedIn for team scope clarification.',
+    notes: 'Reaching out to engineering manager for team scope clarification.',
     tags: ['APIs', 'Electron', 'Micro-frontends'],
     color: '#ff6c37',
     initials: 'PM',
@@ -177,31 +186,26 @@ export const initialApplications = [
 ];
 
 export const STAGES = [
-  { id: 'wishlist', label: 'Wishlist / Drafting', color: 'bg-slate-500/10 text-slate-400 border-slate-700/50', dotColor: 'bg-slate-400' },
-  { id: 'applied', label: 'Applied / In Review', color: 'bg-blue-500/10 text-blue-400 border-blue-700/50', dotColor: 'bg-blue-400' },
-  { id: 'interview', label: 'Interviewing', color: 'bg-amber-500/10 text-amber-400 border-amber-700/50', dotColor: 'bg-amber-400' },
-  { id: 'offer', label: 'Offer Received', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-700/50', dotColor: 'bg-emerald-400' }
+  { id: 'wishlist', label: 'Wishlist', dotColor: 'bg-slate-400' },
+  { id: 'applied', label: 'Applied', dotColor: 'bg-blue-400' },
+  { id: 'interview', label: 'Interviewing', dotColor: 'bg-amber-400' },
+  { id: 'offer', label: 'Offer Received', dotColor: 'bg-emerald-400' }
 ];
 
-export const VALUE_PROPS = [
+export const KEY_BENEFITS = [
   {
-    icon: 'Kanban',
     title: 'Visual Pipeline Tracking',
-    desc: 'Move applications effortlessly across custom stages with zero lag and zero spreadsheet formula breakage.'
+    description: 'See every opportunity move from initial draft to final offer. No broken spreadsheet formulas or messy tabs.',
+    tag: 'Clarity'
   },
   {
-    icon: 'FileText',
-    title: 'Context & Prep Notes in Place',
-    desc: 'Keep salary bounds, interview round history, interviewer feedback, and resume versions tied to each company card.'
+    title: 'Context Bound to Every Card',
+    description: 'Keep round-by-round interview notes, salary bounds, next steps, and recruiter dates directly inside the opportunity card.',
+    tag: 'Context'
   },
   {
-    icon: 'Target',
-    title: 'Active Funnel Velocity',
-    desc: 'See exactly where momentum is stalling so you know when to follow up, when to negotiate, and when to close.'
-  },
-  {
-    icon: 'ShieldCheck',
-    title: '100% Local-First & Private',
-    desc: 'Your career data belongs strictly to you. No tracking pixels, no selling your job search telemetry to third parties.'
+    title: 'Instant Keyboard Navigation',
+    description: 'Jump across active applications, filter by stage or stack, and switch views with fast keyboard shortcuts.',
+    tag: 'Speed'
   }
 ];

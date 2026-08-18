@@ -8,8 +8,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Middleware
-app.use(cors());
+// CORS setup to allow frontend (localhost or live deployed Vercel domain)
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Request logger
@@ -28,18 +33,25 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Applications API
+// Applications routes
 app.use('/api/applications', applicationsRouter);
 
 // Root greeting
 app.get('/', (req, res) => {
   res.json({
-    name: 'HireFlow Backend Service',
+    service: 'HireFlow REST API',
     version: '1.0.0',
-    documentation: '/api/health or /api/applications'
+    documentation: {
+      health: 'GET /api/health',
+      listApplications: 'GET /api/applications',
+      singleApplication: 'GET /api/applications/:id',
+      createApplication: 'POST /api/applications',
+      updateStage: 'PATCH /api/applications/:id/stage',
+      deleteApplication: 'DELETE /api/applications/:id'
+    }
   });
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 HireFlow backend running on port ${PORT}`);
+  console.log(`🚀 HireFlow REST API running on http://localhost:${PORT}`);
 });
