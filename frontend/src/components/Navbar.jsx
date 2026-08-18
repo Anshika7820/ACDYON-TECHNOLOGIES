@@ -15,6 +15,9 @@ export default function Navbar({ onOpenCommand }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  const isMac = typeof window !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+  const shortcutLabel = isMac ? '⌘K' : 'Ctrl+K';
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -64,16 +67,17 @@ export default function Navbar({ onOpenCommand }) {
           {/* Right Actions */}
           <div className="flex items-center gap-2 sm:gap-3">
             
-            {/* Quick Cmd+K Search Launcher */}
+            {/* Quick Search Launcher */}
             <button
               onClick={onOpenCommand}
+              aria-label="Open Search Command Palette"
               className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-colors"
-              title="Open Command Palette (Cmd+K)"
+              title={`Open Command Palette (${shortcutLabel})`}
             >
               <Search className="w-3.5 h-3.5" />
               <span>Search</span>
               <kbd className="px-1.5 py-0.5 text-[10px] font-mono bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700">
-                ⌘K
+                {shortcutLabel}
               </kbd>
             </button>
 

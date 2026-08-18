@@ -40,7 +40,7 @@ export default function CommandPalette({ isOpen, onClose, onSelectJob, applicati
           <Search className="w-4 h-4 text-slate-400 mr-2.5 shrink-0" />
           <input
             type="text"
-            placeholder="Search applications, jump to sections, toggle theme..."
+            placeholder="Search applications or quick actions..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
@@ -48,6 +48,7 @@ export default function CommandPalette({ isOpen, onClose, onSelectJob, applicati
           />
           <button 
             onClick={onClose}
+            aria-label="Close command palette"
             className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md"
           >
             <X className="w-4 h-4" />

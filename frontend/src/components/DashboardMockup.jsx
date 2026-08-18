@@ -15,7 +15,10 @@ export default function DashboardMockup({
   applications, 
   onSelectJob, 
   onAdvanceStage, 
-  onAddJob 
+  onAddJob,
+  apiStatus = 'connected',
+  isLoading = false,
+  onRetryLoad
 }) {
   const [activeView, setActiveView] = useState('kanban');
   const [searchQuery, setSearchQuery] = useState('');
@@ -46,6 +49,9 @@ export default function DashboardMockup({
     offer: applications.filter(j => j.stage === 'offer').length,
     total: applications.length
   };
+
+  // Next Action insight
+  const urgentJob = applications.find(j => j.stage === 'interview' && j.nextAction) || applications.find(j => j.nextAction);
 
   const handleCreateJob = (e) => {
     e.preventDefault();
@@ -130,9 +136,29 @@ export default function DashboardMockup({
               <Info className="w-3.5 h-3.5 text-brand-500 shrink-0" />
               <span><strong>Demo Workspace</strong> &bull; All company names and application records are fictional sample data.</span>
             </div>
-            <span className="font-mono text-[11px] hidden sm:inline-flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> REST API Connected
-            </span>
+            
+            {apiStatus === 'connected' && (
+              <span className="font-mono text-[11px] hidden sm:inline-flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> REST API Connected
+              </span>
+            )}
+            {apiStatus === 'demo_fallback' && (
+              <span className="font-mono text-[11px] hidden sm:inline-flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-medium">
+                <span className="w-2 h-2 rounded-full bg-amber-500" /> Demo Mode (Local Fallback)
+              </span>
+            )}
+            {apiStatus === 'error' && (
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[11px] inline-flex items-center gap-1.5 text-red-500 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-red-500" /> API Unavailable
+                </span>
+                {onRetryLoad && (
+                  <button onClick={onRetryLoad} className="px-2 py-0.5 rounded bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-300 text-[10px] font-semibold hover:bg-red-200 transition-colors">
+                    Retry
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Subheader: Window Controls, View Switcher & Action */}
@@ -428,6 +454,31 @@ export default function DashboardMockup({
           {/* VIEW 3: FUNNEL ANALYTICS */}
           {activeView === 'analytics' && (
             <div className="p-6 bg-slate-50/50 dark:bg-slate-950/50 space-y-6">
+              {/* Next Action Insight Banner */}
+              {urgentJob && (
+                <div className="p-4 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-xl bg-brand-600 text-white shrink-0">
+                      <Clock className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
+                        Next Action Focus &bull; {urgentJob.company}
+                      </div>
+                      <div className="text-xs font-medium text-slate-800 dark:text-slate-200 mt-0.5">
+                        {urgentJob.nextAction}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => onSelectJob(urgentJob)}
+                    className="px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold shadow-sm transition-colors"
+                  >
+                    Inspect Round Debrief →
+                  </button>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                   <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Interview Conversion</span>
@@ -486,7 +537,7 @@ export default function DashboardMockup({
           {/* Footer Bar */}
           <div className="px-6 py-3 bg-slate-50 dark:bg-slate-925 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>State updates automatically on click</span>
-            <span className="font-mono text-[11px] hidden sm:inline">Press ⌘K for command palette</span>
+            <span className="font-mono text-[11px] hidden sm:inline">Press {shortcutLabel} for command palette</span>
           </div>
 
         </div>
@@ -503,7 +554,8 @@ export default function DashboardMockup({
                 <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Company Name</label>
                 <input
                   type="text"
-                  placeholder="e.g. Stripe, GitHub, Figma"
+                  placeholder="e.g. Northstar Labs, Orbit Systems"
+                  maxLength={80}
                   value={newCompany}
                   onChange={e => setNewCompany(e.target.value)}
                   required

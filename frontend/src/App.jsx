@@ -20,24 +20,40 @@ export default function App() {
   const [isEasterEggOpen, setIsEasterEggOpen] = useState(false);
   const [konamiSequence, setKonamiSequence] = useState([]);
   const [toastMessage, setToastMessage] = useState(null);
+  const [apiStatus, setApiStatus] = useState('checking'); // 'connected' | 'demo_fallback' | 'error'
+  const [isLoading, setIsLoading] = useState(true);
 
-  const showToast = (msg) => {
-    setToastMessage(msg);
+  const showToast = (msg, isError = false) => {
+    setToastMessage({ text: msg, isError });
     setTimeout(() => {
-      setToastMessage(prev => (prev === msg ? null : prev));
-    }, 3000);
+      setToastMessage(prev => (prev?.text === msg ? null : prev));
+    }, 3500);
   };
+
+  const loadData = useCallback(async () => {
+    setIsLoading(true);
+    setApiStatus('checking');
+    try {
+      const data = await getApplications();
+      if (data && data.length > 0) {
+        setApplications(data);
+        setApiStatus('connected');
+      } else {
+        setApplications(initialApplications);
+        setApiStatus('demo_fallback');
+      }
+    } catch (err) {
+      setApplications(initialApplications);
+      setApiStatus('demo_fallback');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   // Fetch initial applications from backend REST API
   useEffect(() => {
-    let isMounted = true;
-    getApplications().then((data) => {
-      if (isMounted && data && data.length > 0) {
-        setApplications(data);
-      }
-    });
-    return () => { isMounted = false; };
-  }, []);
+    loadData();
+  }, [loadData]);
 
   // Developer easter egg
   const triggerEasterEgg = useCallback(() => {
@@ -80,12 +96,13 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [triggerEasterEgg]);
 
-  // Stage Advancement Cycle: wishlist -> applied -> interview -> offer
+  // Stage Advancement Cycle with Optimistic Rollback
   const handleAdvanceStage = async (jobId) => {
     const stageOrder = ['wishlist', 'applied', 'interview', 'offer'];
     const currentJob = applications.find(j => j.id === jobId);
     if (!currentJob) return;
 
+    const previousApplications = applications;
     const currentIndex = stageOrder.indexOf(currentJob.stage);
     const nextStage = stageOrder[(currentIndex + 1) % stageOrder.length];
 
@@ -107,13 +124,19 @@ export default function App() {
 
     showToast(`Advanced ${currentJob.company} stage to ${nextStage.toUpperCase()}`);
 
-    // Send PATCH to backend REST API
-    await updateApplicationStage(jobId, nextStage);
+    try {
+      await updateApplicationStage(jobId, nextStage);
+    } catch (err) {
+      setApplications(previousApplications);
+      showToast(`Could not update ${currentJob.company} stage on API — state rolled back`, true);
+    }
   };
 
-  // Update stage directly from inspector modal
+  // Update stage directly from inspector modal with Optimistic Rollback
   const handleUpdateStage = async (jobId, newStage) => {
     const currentJob = applications.find(j => j.id === jobId);
+    const previousApplications = applications;
+
     setApplications(prev => prev.map(job => {
       if (job.id === jobId) {
         return {
@@ -141,30 +164,48 @@ export default function App() {
       showToast(`Updated ${currentJob.company} stage to ${newStage.toUpperCase()}`);
     }
 
-    // Send PATCH to backend REST API
-    await updateApplicationStage(jobId, newStage);
+    try {
+      await updateApplicationStage(jobId, newStage);
+    } catch (err) {
+      setApplications(previousApplications);
+      showToast(`Could not save stage on API — state rolled back`, true);
+    }
   };
 
-  // Add custom application
+  // Add custom application with API response handling
   const handleAddJob = async (newJob) => {
-    const created = await createApplication(newJob);
-    const finalJob = created || newJob;
-    setApplications(prev => [finalJob, ...prev.filter(j => j.id !== finalJob.id)]);
-    showToast(`Added ${finalJob.company} opportunity`);
+    const previousApplications = applications;
+    try {
+      const created = await createApplication(newJob);
+      const finalJob = created || newJob;
+      setApplications(prev => [finalJob, ...prev.filter(j => j.id !== finalJob.id)]);
+      showToast(`Added ${finalJob.company} opportunity`);
+    } catch (err) {
+      setApplications(previousApplications);
+      showToast(`Could not create opportunity on API — state rolled back`, true);
+    }
   };
 
-  // Delete application
+  // Delete application with Optimistic Rollback
   const handleDeleteJob = async (jobId) => {
     const currentJob = applications.find(j => j.id === jobId);
+    const previousApplications = applications;
+
     setApplications(prev => prev.filter(j => j.id !== jobId));
     if (selectedJob && selectedJob.id === jobId) {
       setSelectedJob(null);
     }
+
     if (currentJob) {
       showToast(`Removed ${currentJob.company} application`);
     }
-    // Send DELETE to backend REST API
-    await deleteApplication(jobId);
+
+    try {
+      await deleteApplication(jobId);
+    } catch (err) {
+      setApplications(previousApplications);
+      showToast(`Could not delete application on API — state rolled back`, true);
+    }
   };
 
   return (
@@ -185,6 +226,9 @@ export default function App() {
             onSelectJob={(job) => setSelectedJob(job)}
             onAdvanceStage={handleAdvanceStage}
             onAddJob={handleAddJob}
+            apiStatus={apiStatus}
+            isLoading={isLoading}
+            onRetryLoad={loadData}
           />
 
           <KeyBenefits />
@@ -196,9 +240,13 @@ export default function App() {
 
         {/* Toast Feedback */}
         {toastMessage && (
-          <div className="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold shadow-2xl border border-slate-800 dark:border-slate-200 animate-fade-in flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span>{toastMessage}</span>
+          <div className={`fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl text-xs font-semibold shadow-2xl border animate-fade-in flex items-center gap-2 ${
+            toastMessage.isError
+              ? 'bg-red-950 text-red-100 border-red-800'
+              : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-800 dark:border-slate-200'
+          }`}>
+            <span className={`w-2 h-2 rounded-full ${toastMessage.isError ? 'bg-red-500' : 'bg-emerald-500'}`} />
+            <span>{toastMessage.text}</span>
           </div>
         )}
 

@@ -40,20 +40,29 @@
 
 ## 🚀 Quickstart (Running Locally)
 
-### 1. Install all dependencies
+### Option A — Standard Monorepo Commands (From Root)
 ```bash
+# Install dependencies across monorepo
 npm run install:all
+
+# Terminal 1 — Start Frontend (http://localhost:5173)
+npm run dev
+
+# Terminal 2 — Start Backend API (http://localhost:5001)
+npm run backend:dev
 ```
 
-### 2. Start both Frontend & Backend
+### Option B — Subdirectory Commands
 ```bash
-# Terminal 1 — Frontend (Vite)
+# Terminal 1 — Frontend
+cd frontend
+npm install
 npm run dev
-# Running at http://localhost:5173
 
-# Terminal 2 — Backend API (Express)
-npm run backend:dev
-# Running at http://localhost:5001
+# Terminal 2 — Backend
+cd backend
+npm install
+npm run dev
 ```
 
 ---

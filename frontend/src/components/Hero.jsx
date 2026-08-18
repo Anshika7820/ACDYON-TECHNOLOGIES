@@ -2,6 +2,9 @@ import React from 'react';
 import { ArrowRight, Terminal } from 'lucide-react';
 
 export default function Hero({ onOpenCommand }) {
+  const isMac = typeof window !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+  const shortcutLabel = isMac ? '⌘K' : 'Ctrl+K';
+
   return (
     <section className="relative pt-12 pb-12 md:pt-20 md:pb-16 overflow-hidden">
       
@@ -42,12 +45,13 @@ export default function Hero({ onOpenCommand }) {
 
             <button
               onClick={onOpenCommand}
+              aria-label="Open Command Palette"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-all"
             >
               <Terminal className="w-4 h-4 text-brand-500" />
               <span>Quick Command Bar</span>
               <kbd className="text-[10px] font-mono px-1.5 py-0.5 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-400">
-                ⌘K
+                {shortcutLabel}
               </kbd>
             </button>
           </div>
