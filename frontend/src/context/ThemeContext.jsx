@@ -7,7 +7,7 @@ export function ThemeProvider({ children }) {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('hireflow-theme');
       if (savedTheme) return savedTheme;
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     return 'dark';
   });

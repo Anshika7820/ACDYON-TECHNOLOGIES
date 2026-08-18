@@ -53,17 +53,26 @@ export default function DashboardMockup({
   // Next Action insight
   const urgentJob = applications.find(j => j.stage === 'interview' && j.nextAction) || applications.find(j => j.nextAction);
 
+  const [formError, setFormError] = useState(null);
+
   const handleCreateJob = (e) => {
     e.preventDefault();
-    if (!newCompany.trim() || !newRole.trim()) return;
+    setFormError(null);
+    if (!newCompany.trim()) {
+      setFormError('Company name is required');
+      return;
+    }
+    if (!newRole.trim()) {
+      setFormError('Role title is required');
+      return;
+    }
     
     const colors = ['#6366f1', '#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     
     const newJobObj = {
-      id: `app-${Date.now()}`,
-      company: newCompany,
-      role: newRole,
+      company: newCompany.trim(),
+      role: newRole.trim(),
       stage: newStage,
       salary: newSalary,
       location: 'Remote',
@@ -76,7 +85,7 @@ export default function DashboardMockup({
       notes: 'Added directly during interactive demo walkthrough.',
       tags: ['Custom', 'Active'],
       color: randomColor,
-      initials: newCompany.slice(0, 2).toUpperCase(),
+      initials: newCompany.trim().slice(0, 2).toUpperCase(),
       timeline: [
         { date: 'Today', event: 'Added to HireFlow tracker' }
       ]
@@ -263,22 +272,47 @@ export default function DashboardMockup({
             </div>
           </div>
 
-          {/* VIEW 1: KANBAN BOARD */}
-          {activeView === 'kanban' && (
-            <div className="p-4 sm:p-6 bg-slate-50/50 dark:bg-slate-950/50 min-h-[460px]">
-              
-              {/* Mobile Stage Selector */}
-              <div className="md:hidden flex overflow-x-auto pb-3 mb-4 gap-2 border-b border-slate-200 dark:border-slate-800">
-                {STAGES.map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() => setMobileActiveStage(s.id)}
-                    className={`px-3 py-1.5 text-xs font-semibold rounded-xl whitespace-nowrap transition-all ${
-                      mobileActiveStage === s.id
-                        ? 'bg-brand-600 text-white shadow-sm'
-                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400'
-                    }`}
-                  >
+          {/* WORKSPACE LOADING / ERROR / CONTENT AREA */}
+          {isLoading ? (
+            <div className="p-12 text-center flex flex-col items-center justify-center min-h-[420px] space-y-4 bg-slate-50/50 dark:bg-slate-950/50">
+              <div className="w-10 h-10 border-4 border-brand-500 border-t-transparent rounded-full animate-spin" />
+              <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">Loading your pipeline workspace...</div>
+              <div className="text-xs text-slate-400 font-mono">Connecting to Express REST API</div>
+            </div>
+          ) : apiStatus === 'error' && applications.length === 0 ? (
+            <div className="p-12 text-center flex flex-col items-center justify-center min-h-[420px] space-y-4 bg-slate-50/50 dark:bg-slate-950/50">
+              <div className="w-12 h-12 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center font-bold text-xl">!</div>
+              <div className="text-base font-bold text-slate-900 dark:text-white">Unable to connect to HireFlow API</div>
+              <div className="text-xs text-slate-500 max-w-sm leading-relaxed">
+                The demo workspace could not reach its backend REST API. Ensure the backend server is running locally.
+              </div>
+              {onRetryLoad && (
+                <button 
+                  onClick={onRetryLoad} 
+                  className="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold shadow-sm transition-all"
+                >
+                  Retry Connection
+                </button>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* VIEW 1: KANBAN BOARD */}
+              {activeView === 'kanban' && (
+                <div className="p-4 sm:p-6 bg-slate-50/50 dark:bg-slate-950/50 min-h-[460px]">
+                  
+                  {/* Mobile Stage Selector */}
+                  <div className="md:hidden flex overflow-x-auto pb-3 mb-4 gap-2 border-b border-slate-200 dark:border-slate-800">
+                    {STAGES.map((s) => (
+                      <button
+                        key={s.id}
+                        onClick={() => setMobileActiveStage(s.id)}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-xl whitespace-nowrap transition-all ${
+                          mobileActiveStage === s.id
+                            ? 'bg-brand-600 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                        }`}
+                      >
                     {s.label} ({applications.filter(j => j.stage === s.id).length})
                   </button>
                 ))}
@@ -533,6 +567,8 @@ export default function DashboardMockup({
               </div>
             </div>
           )}
+          </>
+          )}
 
           {/* Footer Bar */}
           <div className="px-6 py-3 bg-slate-50 dark:bg-slate-925 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
@@ -549,6 +585,11 @@ export default function DashboardMockup({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
           <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Add Opportunity</h3>
+            {formError && (
+              <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-semibold">
+                {formError}
+              </div>
+            )}
             <form onSubmit={handleCreateJob} className="space-y-4 text-xs">
               <div>
                 <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Company Name</label>
@@ -557,7 +598,7 @@ export default function DashboardMockup({
                   placeholder="e.g. Northstar Labs, Orbit Systems"
                   maxLength={80}
                   value={newCompany}
-                  onChange={e => setNewCompany(e.target.value)}
+                  onChange={e => { setNewCompany(e.target.value); setFormError(null); }}
                   required
                   className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100"
                 />
@@ -568,8 +609,9 @@ export default function DashboardMockup({
                 <input
                   type="text"
                   placeholder="e.g. Senior Frontend Engineer"
+                  maxLength={80}
                   value={newRole}
-                  onChange={e => setNewRole(e.target.value)}
+                  onChange={e => { setNewRole(e.target.value); setFormError(null); }}
                   required
                   className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100"
                 />

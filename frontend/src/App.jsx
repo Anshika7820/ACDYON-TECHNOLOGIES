@@ -35,16 +35,11 @@ export default function App() {
     setApiStatus('checking');
     try {
       const data = await getApplications();
-      if (data && data.length > 0) {
-        setApplications(data);
-        setApiStatus('connected');
-      } else {
-        setApplications(initialApplications);
-        setApiStatus('demo_fallback');
-      }
+      setApplications(data || []);
+      setApiStatus('connected');
     } catch (err) {
-      setApplications(initialApplications);
-      setApiStatus('demo_fallback');
+      setApiStatus('error');
+      setApplications([]);
     } finally {
       setIsLoading(false);
     }
