@@ -8,11 +8,6 @@ export default function CommandPalette({ isOpen, onClose, onSelectJob, applicati
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        if (isOpen) onClose();
-        else onClose(false);
-      }
       if (e.key === 'Escape' && isOpen) {
         onClose();
       }

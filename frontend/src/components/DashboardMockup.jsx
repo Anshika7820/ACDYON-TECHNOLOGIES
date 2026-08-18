@@ -82,6 +82,31 @@ export default function DashboardMockup({
     setIsAddModalOpen(false);
   };
 
+  // Dynamic analytics calculations
+  const offerJobs = applications.filter(j => j.stage === 'offer');
+  const topOfferText = offerJobs.length > 0 
+    ? `${offerJobs[0].company} (${offerJobs[0].role})`
+    : 'No active offers currently';
+
+  const parsedSalaries = applications.map(app => {
+    if (!app.salary) return null;
+    const numbers = app.salary.match(/\d+/g);
+    if (!numbers || numbers.length === 0) return null;
+    const vals = numbers.map(n => parseInt(n, 10) * (n.length <= 3 ? 1000 : 1));
+    return vals.reduce((a, b) => a + b, 0) / vals.length;
+  }).filter(Boolean);
+
+  const avgSalaryVal = parsedSalaries.length > 0
+    ? Math.round(parsedSalaries.reduce((a, b) => a + b, 0) / parsedSalaries.length)
+    : 0;
+
+  const avgSalaryFormatted = avgSalaryVal > 0 
+    ? `$${avgSalaryVal.toLocaleString()} / yr`
+    : 'N/A';
+
+  const isMac = typeof window !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+  const shortcutLabel = isMac ? '⌘K' : 'Ctrl+K';
+
   return (
     <section id="product-demo" className="py-8 md:py-16 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -103,9 +128,11 @@ export default function DashboardMockup({
           <div className="px-4 py-2 bg-slate-100/90 dark:bg-slate-850/90 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
             <div className="flex items-center gap-2">
               <Info className="w-3.5 h-3.5 text-brand-500 shrink-0" />
-              <span><strong>Demo Workspace</strong> &bull; All company names and application records are fictional sample data for illustration.</span>
+              <span><strong>Demo Workspace</strong> &bull; All company names and application records are fictional sample data.</span>
             </div>
-            <span className="font-mono text-[11px] hidden sm:inline text-slate-500">Live Client State</span>
+            <span className="font-mono text-[11px] hidden sm:inline-flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> REST API Connected
+            </span>
           </div>
 
           {/* Subheader: Window Controls, View Switcher & Action */}
@@ -414,14 +441,14 @@ export default function DashboardMockup({
                   <div className="text-2xl font-extrabold text-emerald-500 mt-1">
                     {stageCounts.offer} Active Offer
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">Linear ($180k - $210k + Equity)</p>
+                  <p className="text-xs text-slate-400 mt-1 truncate">{topOfferText}</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                   <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Average Compensation Target</span>
                   <div className="text-2xl font-extrabold text-brand-500 mt-1 font-mono">
-                    $192,500 / yr
+                    {avgSalaryFormatted}
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">Across 8 tracked roles</p>
+                  <p className="text-xs text-slate-400 mt-1">Across {stageCounts.total} tracked roles</p>
                 </div>
               </div>
 

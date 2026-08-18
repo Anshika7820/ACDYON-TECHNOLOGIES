@@ -19,6 +19,14 @@ export default function App() {
   const [isCommandOpen, setIsCommandOpen] = useState(false);
   const [isEasterEggOpen, setIsEasterEggOpen] = useState(false);
   const [konamiSequence, setKonamiSequence] = useState([]);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(prev => (prev === msg ? null : prev));
+    }, 3000);
+  };
 
   // Fetch initial applications from backend REST API
   useEffect(() => {
@@ -34,6 +42,18 @@ export default function App() {
   // Developer easter egg
   const triggerEasterEgg = useCallback(() => {
     setIsEasterEggOpen(true);
+  }, []);
+
+  // Global Command Palette shortcut (Ctrl+K or Cmd+K)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Konami Code listener: ↑ ↑ ↓ ↓ ← → ← → B A
@@ -85,12 +105,15 @@ export default function App() {
       return job;
     }));
 
+    showToast(`Advanced ${currentJob.company} stage to ${nextStage.toUpperCase()}`);
+
     // Send PATCH to backend REST API
     await updateApplicationStage(jobId, nextStage);
   };
 
   // Update stage directly from inspector modal
   const handleUpdateStage = async (jobId, newStage) => {
+    const currentJob = applications.find(j => j.id === jobId);
     setApplications(prev => prev.map(job => {
       if (job.id === jobId) {
         return {
@@ -114,22 +137,31 @@ export default function App() {
       }));
     }
 
+    if (currentJob) {
+      showToast(`Updated ${currentJob.company} stage to ${newStage.toUpperCase()}`);
+    }
+
     // Send PATCH to backend REST API
     await updateApplicationStage(jobId, newStage);
   };
 
   // Add custom application
   const handleAddJob = async (newJob) => {
-    setApplications(prev => [newJob, ...prev]);
-    // Send POST to backend REST API
-    await createApplication(newJob);
+    const created = await createApplication(newJob);
+    const finalJob = created || newJob;
+    setApplications(prev => [finalJob, ...prev.filter(j => j.id !== finalJob.id)]);
+    showToast(`Added ${finalJob.company} opportunity`);
   };
 
   // Delete application
   const handleDeleteJob = async (jobId) => {
+    const currentJob = applications.find(j => j.id === jobId);
     setApplications(prev => prev.filter(j => j.id !== jobId));
     if (selectedJob && selectedJob.id === jobId) {
       setSelectedJob(null);
+    }
+    if (currentJob) {
+      showToast(`Removed ${currentJob.company} application`);
     }
     // Send DELETE to backend REST API
     await deleteApplication(jobId);
@@ -161,6 +193,14 @@ export default function App() {
 
           <FinalCTA onOpenCommand={() => setIsCommandOpen(true)} />
         </main>
+
+        {/* Toast Feedback */}
+        {toastMessage && (
+          <div className="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold shadow-2xl border border-slate-800 dark:border-slate-200 animate-fade-in flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
 
         {/* Footer */}
         <Footer onTriggerEasterEgg={triggerEasterEgg} />

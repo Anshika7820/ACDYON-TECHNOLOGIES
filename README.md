@@ -8,28 +8,33 @@
 
 ```
                  USER
-                   ↓
-      React 18 + Vite (Frontend)
-                   ↓  REST API / HTTP
+                   │
+       React 18 + Vite (Frontend)
+                   │
+           REST API / HTTP
+                   │
       Node.js + Express (Backend)
-                   ↓
-         Live Client State
+                   │
+        In-Memory Seed State
 ```
 
-- **Frontend (`frontend/`):** React 18, Vite 6, Tailwind CSS, Lucide Icons.
-- **Backend (`backend/`):** Node.js, Express REST API (`GET /api/applications`, `PATCH /api/applications/:id/stage`, `POST /api/applications`, `GET /api/health`).
+- **Frontend (`frontend/`):** React 18, Vite 6, Tailwind CSS, Lucide Icons, ThemeContext.
+- **Backend (`backend/`):** Node.js, Express REST API (`GET /api/health`, `GET /api/applications`, `GET /api/applications/:id`, `POST /api/applications`, `PATCH /api/applications/:id`, `DELETE /api/applications/:id`).
+
+> **Engineering Note on Persistence:** The backend intentionally uses in-memory seed state because database persistence was outside the scope of this time-boxed Track 2 home page assessment. All company names and application records are 100% fictional demo data (`Northstar Labs`, `Orbit Systems`, `PixelForge`, etc.).
 
 ---
 
 ## 🌟 Key Features
 
 - **Interactive Pipeline Simulator:** Live Kanban, Dense Data Table, and Funnel views demonstrating active stage progression.
-- **Contextual Job Inspection:** Click any application card to review interview round debriefs, notes, and timeline milestones.
-- **Stage Progression:** Advance opportunities across Wishlist, Applied, Interviewing, and Offer stages with live REST API updates.
-- **Responsive at 390px & 1440px:** Mobile-tailored stage selector and touch targets with zero horizontal scrolling.
-- **Complete Dark & Light Mode:** All-or-nothing theme toggle with persistent storage and zero unstyled flicker.
-- **Command Palette (`⌘K`):** Fast keyboard-driven search and navigation.
-- **Developer Easter Egg:** Discover the secret mode via the **Konami Code** (`↑ ↑ ↓ ↓ ← → ← → B A`).
+- **Dynamic Analytics:** Real-time calculation of interview conversion rates, active offer titles, average compensation targets, and pipeline volume distribution.
+- **Contextual Job Inspector:** Click any application card to review interview debriefs, compensation ranges, next steps, and stage timelines.
+- **Stage Progression & Micro-Toasts:** Advance opportunities across Wishlist, Applied, Interviewing, and Offer stages with live REST API updates and instant toast feedback.
+- **Responsive at 390px & 1440px:** Mobile-tailored stage selector tab bar and touch targets with zero horizontal scrolling.
+- **Zero-FOUC Dark & Light Mode:** Immediate theme script in `<head>` preventing unstyled flicker before React hydration.
+- **Command Palette (`Ctrl+K` / `⌘K`):** Fast keyboard-driven search and navigation across tracked applications.
+- **Developer Easter Egg:** Discover the architecture overview modal via the **Konami Code** (`↑ ↑ ↓ ↓ ← → ← → B A`).
 
 ---
 
@@ -59,7 +64,7 @@ npm run backend:dev
 1. Import repository to Vercel.
 2. Set **Root Directory** to `frontend`.
 3. Framework Preset: **Vite** (`npm run build`, Output: `dist`).
-4. (Optional) Set Environment Variable `VITE_API_URL` to your deployed backend URL.
+4. Set Environment Variable `VITE_API_URL` to your deployed backend URL.
 5. Click **Deploy**.
 
 ### Backend Deployment (Render / Railway)
@@ -73,4 +78,4 @@ npm run backend:dev
 
 ## 📄 Design Rationale
 
-See [`DECISIONS.md`](./DECISIONS.md) for the 1-page writeup on product strategy, time-boxed trade-offs, and engineering decisions.
+See [`DECISIONS.md`](./DECISIONS.md) for the 1-page writeup on product strategy, time-boxed trade-offs, and line-by-line engineering decisions.

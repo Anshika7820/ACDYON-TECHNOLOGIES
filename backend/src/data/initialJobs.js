@@ -1,8 +1,8 @@
-// Fictional sample job applications for backend seed
+// Believable 100% fictional company application data for backend seed
 export const seedApplications = [
   {
     id: 'app-1',
-    company: 'Stripe',
+    company: 'Northstar Labs',
     role: 'Staff Frontend Engineer',
     stage: 'interview', // wishlist, applied, interview, offer
     salary: '$190k - $230k',
@@ -16,7 +16,7 @@ export const seedApplications = [
     notes: 'Discussed state machines and optimistic caching in round 2. Next: Take-home walkthrough with Staff Architect.',
     tags: ['React', 'TypeScript', 'High Priority'],
     color: '#6366f1',
-    initials: 'ST',
+    initials: 'NL',
     timeline: [
       { date: 'Jul 28', event: 'Application submitted via referral' },
       { date: 'Aug 02', event: 'Recruiter screen completed' },
@@ -26,10 +26,10 @@ export const seedApplications = [
   },
   {
     id: 'app-2',
-    company: 'Linear',
+    company: 'Orbit Systems',
     role: 'Senior Product Engineer',
     stage: 'offer',
-    salary: '$180k - $210k + 0.15% equity',
+    salary: '$180k - $210k + Equity',
     location: 'Remote (Global)',
     appliedDate: '2026-07-15',
     lastActivity: 'Yesterday',
@@ -40,7 +40,7 @@ export const seedApplications = [
     notes: 'Written offer received. Reviewing equity vesting schedule and compensation package before Friday.',
     tags: ['Next.js', 'WebGL', 'Top Choice'],
     color: '#5e6ad2',
-    initials: 'LN',
+    initials: 'OS',
     timeline: [
       { date: 'Jul 15', event: 'Application submitted' },
       { date: 'Jul 20', event: 'Portfolio walkthrough' },
@@ -51,7 +51,7 @@ export const seedApplications = [
   },
   {
     id: 'app-3',
-    company: 'Vercel',
+    company: 'PixelForge',
     role: 'Design Engineer (Core UI)',
     stage: 'interview',
     salary: '$175k - $205k',
@@ -65,7 +65,7 @@ export const seedApplications = [
     notes: 'Showcase design tokens, micro-interactions, and accessibility optimizations.',
     tags: ['Design Systems', 'Tailwind', 'Next.js'],
     color: '#000000',
-    initials: 'VC',
+    initials: 'PF',
     timeline: [
       { date: 'Aug 01', event: 'Application submitted' },
       { date: 'Aug 06', event: 'Screen with Design Systems Lead' },
@@ -74,7 +74,7 @@ export const seedApplications = [
   },
   {
     id: 'app-4',
-    company: 'Figma',
+    company: 'CloudNest',
     role: 'Full Stack Engineer (Workspaces)',
     stage: 'applied',
     salary: '$185k - $220k',
@@ -88,7 +88,7 @@ export const seedApplications = [
     notes: 'Submitted resume highlighting real-time multiplayer document sync.',
     tags: ['WebSockets', 'Rust', 'CRDTs'],
     color: '#f24e1e',
-    initials: 'FG',
+    initials: 'CN',
     timeline: [
       { date: 'Aug 10', event: 'Application received & verified' },
       { date: 'Aug 12', event: 'Passed initial resume parsing check' },
@@ -96,7 +96,7 @@ export const seedApplications = [
   },
   {
     id: 'app-5',
-    company: 'Datadog',
+    company: 'VertexWorks',
     role: 'Senior Frontend Infrastructure Engineer',
     stage: 'applied',
     salary: '$170k - $200k',
@@ -110,7 +110,7 @@ export const seedApplications = [
     notes: 'Recruiter call booked for Thursday 2:00 PM EST.',
     tags: ['Performance', 'Webpack', 'Observability'],
     color: '#632ca6',
-    initials: 'DD',
+    initials: 'VW',
     timeline: [
       { date: 'Aug 12', event: 'Application submitted' },
       { date: 'Aug 15', event: 'Recruiter invite sent' },
@@ -118,7 +118,7 @@ export const seedApplications = [
   },
   {
     id: 'app-6',
-    company: 'Supabase',
+    company: 'NovaStack',
     role: 'Developer Advocate & UI Engineer',
     stage: 'wishlist',
     salary: '$160k - $190k',
@@ -129,10 +129,10 @@ export const seedApplications = [
     type: 'Full-time',
     referral: 'Portfolio pitch',
     round: 'Drafting Application',
-    notes: 'Polishing open-source Postgres visualizer tool before submitting direct pitch to Head of DX.',
+    notes: 'Polishing open-source DB visualizer tool before submitting direct pitch to Head of DX.',
     tags: ['PostgreSQL', 'Content', 'OSS'],
     color: '#3ecf8e',
-    initials: 'SB',
+    initials: 'NS',
     timeline: [
       { date: 'Aug 16', event: 'Target role identified' },
       { date: 'Aug 18', event: 'Drafted tailored introduction memo' },
@@ -140,7 +140,7 @@ export const seedApplications = [
   },
   {
     id: 'app-7',
-    company: 'Anthropic',
+    company: 'SignalGrid',
     role: 'Frontend Systems Engineer',
     stage: 'interview',
     salary: '$200k - $240k',
@@ -154,7 +154,7 @@ export const seedApplications = [
     notes: 'Onsite completed. Covered streaming token renderers, responsive canvas, and state management.',
     tags: ['Streaming UI', 'Performance', 'High Priority'],
     color: '#d97706',
-    initials: 'AN',
+    initials: 'SG',
     timeline: [
       { date: 'Jul 22', event: 'Application submitted' },
       { date: 'Jul 27', event: 'Technical Phone Screen' },
@@ -164,7 +164,7 @@ export const seedApplications = [
   },
   {
     id: 'app-8',
-    company: 'Postman',
+    company: 'BrightLayer',
     role: 'Lead UI Platform Engineer',
     stage: 'wishlist',
     salary: '$175k - $205k',
@@ -178,7 +178,7 @@ export const seedApplications = [
     notes: 'Reaching out to engineering manager for team scope clarification.',
     tags: ['APIs', 'Electron', 'Micro-frontends'],
     color: '#ff6c37',
-    initials: 'PM',
+    initials: 'BL',
     timeline: [
       { date: 'Aug 15', event: 'Bookmark added to pipeline' }
     ]
