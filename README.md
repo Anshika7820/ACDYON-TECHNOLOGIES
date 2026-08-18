@@ -1,6 +1,11 @@
 # HireFlow — Smart Job Application Workspace
 
-> A focused, high-clarity job application command center built for the **Acdyon Technologies Frontend Engineering Assessment** (Part 2: Premium Home Page).
+> Premium job application workspace built for the **Acdyon Technologies Frontend Engineering Assessment** (Track 2 — Premium Home Page).
+
+### 🚀 Submission Links
+- **GitHub Repository:** [https://github.com/Anshika7820/ACDYON-TECHNOLOGIES](https://github.com/Anshika7820/ACDYON-TECHNOLOGIES)
+- **Live Frontend (Vercel):** `https://hireflow-workspace.vercel.app` *(or your Vercel deployment URL)*
+- **Live REST API (Render):** `https://hireflow-api.onrender.com/api/health`
 
 ---
 
